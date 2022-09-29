@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
             for(let i=0; i < inputItems.length; i++)
             {
                 // check particular id is in items 
-                console.log(inputItems[i].id);
-
                 if( inputItems[i].id in items )
                 {
                     // get through storage items and check if key(id of input in html) = 

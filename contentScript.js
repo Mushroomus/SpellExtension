@@ -17,7 +17,6 @@
     {
        chrome.storage.local.get(null, function(items) {
            Object.entries(items).forEach(([key, value]) => {
-               console.log("Key Value: " + key + " Value: " + value);
                if(value == "off")
                    changeEnable(key,"false");
            });
@@ -52,6 +51,28 @@
 });
 
 const advancedSettingsLoaded = (tabUrl) => {
+
+    const targetNode = document.getElementById("page-content");
+    const config = { attributes: true, childList: true, subtree: true };
+
+    var helper = document.getElementsByClassName('item-popover');
+
+    const callback = (mutationList, observer) => {
+        for (const mutation of mutationList) {
+            if( mutation.attributeName === 'class' && helper.length > 0)
+            {
+                var newElement = document.createElement("button");
+                helper[0].appendChild(newElement);
+                console.log('A child node has been added or removed.');
+            }
+        }
+      };
+
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+
+
+
     // settings up new Url to be opened 
        function urlValue(urlChange) { 
         return function() {
