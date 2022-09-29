@@ -59,14 +59,35 @@ const advancedSettingsLoaded = (tabUrl) => {
 
     const callback = (mutationList, observer) => {
         for (const mutation of mutationList) {
-            if( mutation.attributeName === 'class' && helper.length > 0)
+            if( mutation.attributeName === 'class' && helper.length == 1 && document.getElementById("newButtonListings") == null)
             {
-                var newElement = document.createElement("button");
-                helper[0].appendChild(newElement);
-                console.log('A child node has been added or removed.');
+                var hrefValue = document.getElementById('popover-search-links').getElementsByClassName("btn btn-default btn-xs")[0].href;
+                hrefValue = hrefValue + '&' + buttonList[1].urlChange;
+
+                var newButton = document.createElement("button");
+                newButton.addEventListener("click", function(){
+                    window.open(hrefValue);
+                });
+    
+                newButton.innerText = "Spells";
+                newButton.className = "spellButton";
+                newButton.title = "Click to get spell listings";
+                newButton.style.height = '20px';
+                newButton.style.width = '50px';
+                newButton.style.marginLeft = '0px';
+                newButton.style.fontSize = '11px';
+                newButton.style.marginTop = '5px';
+                newButton.style.lineHeight = '0';
+
+                var newDiv = document.createElement("div");
+                newDiv.id = "newButtonListings";
+                newDiv.appendChild(newButton);
+
+                document.getElementsByClassName('popover-content')[0].appendChild(newDiv);
             }
         }
       };
+    
 
     const observer = new MutationObserver(callback);
     observer.observe(targetNode, config);
