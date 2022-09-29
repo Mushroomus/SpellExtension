@@ -1,0 +1,28 @@
+{
+    "name": "Backpack.tf Spells",
+    "version": "1.0",
+    "description": "Shows spell buttons",
+    "permissions": ["tabs", "storage"],
+    "background": {
+        "service_worker": "background.js"
+      },
+      "content_scripts": [
+        {
+          "matches": ["https://backpack.tf/*"],
+          "css": ["css/button.css"],
+          "js": ["contentScript.js"],
+          "run_at": "document_end"
+        }
+      ],
+      "action": {
+        "default_title": "Spells",
+        "default_popup": "popup.html"
+      },
+      "icons": {
+        "16": "assets/spells.png",
+        "32": "assets/spells.png",
+        "48": "assets/spells.png",
+        "128": "assets/spells.png"
+      },
+      "manifest_version":3
+}
