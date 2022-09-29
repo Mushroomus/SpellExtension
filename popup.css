@@ -1,12 +1,13 @@
 #container {
     width: 220px;
-    height: 600px;
+    height: 520px;
     float: left;
 }
 
 p {
   font-family: fantasy;
   font-size: 15px;
+  white-space: nowrap;
 }
 
 #columnLeft{

@@ -52,6 +52,7 @@
 
 const advancedSettingsLoaded = (tabUrl) => {
 
+    // setting up MutationObserver, because popup shows dynamically - we need to monitor website when it pops up 
     const targetNode = document.getElementById("page-content");
     const config = { attributes: true, childList: true, subtree: true };
 
@@ -78,6 +79,7 @@ const advancedSettingsLoaded = (tabUrl) => {
                 newButton.style.fontSize = '11px';
                 newButton.style.marginTop = '5px';
                 newButton.style.lineHeight = '0';
+                newButton.style.padding = '0px 0px';
 
                 var newDiv = document.createElement("div");
                 newDiv.id = "newButtonListings";
