@@ -48,55 +48,62 @@
             advancedSettingsLoaded(message.tabUrl);;
           }, 200);
     }
+    else if(message.type === "newOneButton")
+    {
+        mutattionObserver();
+    }
 });
 
-const advancedSettingsLoaded = (tabUrl) => {
 
-    // setting up MutationObserver, because popup shows dynamically - we need to monitor website when it pops up 
-    const targetNode = document.getElementById("page-content");
-    const config = { attributes: true, childList: true, subtree: true };
-
-    var helper = document.getElementsByClassName('item-popover');
-
-    const callback = (mutationList, observer) => {
-        for (const mutation of mutationList) {
-            if( mutation.attributeName === 'class' && helper.length == 1 && document.getElementById("newButtonListings") == null)
-            {
-                var hrefValue = document.getElementById('popover-search-links').getElementsByClassName("btn btn-default btn-xs")[0].href;
-                hrefValue = hrefValue + '&' + buttonList[1].urlChange;
-
-                var newButton = document.createElement("button");
-                newButton.addEventListener("click", function(){
-                    window.open(hrefValue);
-                });
+function mutattionObserver()
+{
+        // setting up MutationObserver, because popup shows dynamically - we need to monitor website when it pops up 
+        const targetNode = document.getElementById("page-content");
+        const config = { attributes: true, childList: true, subtree: true };
     
-                newButton.innerText = "Spells";
-                newButton.className = "spellButton";
-                newButton.title = "Click to get spell listings";
-                newButton.style.height = '20px';
-                newButton.style.width = '50px';
-                newButton.style.marginLeft = '0px';
-                newButton.style.fontSize = '11px';
-                newButton.style.marginTop = '5px';
-                newButton.style.lineHeight = '0';
-                newButton.style.padding = '0px 0px';
-
-                var newDiv = document.createElement("div");
-                newDiv.id = "newButtonListings";
-                newDiv.appendChild(newButton);
-
-                document.getElementsByClassName('popover-content')[0].appendChild(newDiv);
+        var helper = document.getElementsByClassName('item-popover');
+    
+        const callback = (mutationList, observer) => {
+            for (const mutation of mutationList) {
+                if( mutation.attributeName === 'class' && helper.length == 1 && document.getElementById("newButtonListings") == null)
+                {
+                    var hrefValue = document.getElementById('popover-search-links').getElementsByClassName("btn btn-default btn-xs")[0].href;
+                    hrefValue = hrefValue + '&' + buttonList[1].urlChange;
+    
+                    var newButton = document.createElement("button");
+                    newButton.addEventListener("click", function(){
+                        window.open(hrefValue);
+                    });
+        
+                    newButton.innerText = "Spells";
+                    newButton.className = "spellButton";
+                    newButton.title = "Click to get spell listings";
+                    newButton.style.height = '20px';
+                    newButton.style.width = '50px';
+                    newButton.style.marginLeft = '0px';
+                    newButton.style.fontSize = '11px';
+                    newButton.style.marginTop = '5px';
+                    newButton.style.lineHeight = '0';
+                    newButton.style.padding = '0px 0px';
+    
+                    var newDiv = document.createElement("div");
+                    newDiv.id = "newButtonListings";
+                    newDiv.appendChild(newButton);
+    
+                    document.getElementsByClassName('popover-content')[0].appendChild(newDiv);
+                }
             }
-        }
-      };
+          };
+        
     
+        const observer = new MutationObserver(callback);
+        observer.observe(targetNode, config);
+}
+const advancedSettingsLoaded = (tabUrl) => {
+    
+        mutattionObserver();
 
-    const observer = new MutationObserver(callback);
-    observer.observe(targetNode, config);
-
-
-
-    // settings up new Url to be opened 
+       // settings up new Url to be opened 
        function urlValue(urlChange) { 
         return function() {
             if( tabUrl.includes("?") )
