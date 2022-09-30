@@ -23,6 +23,18 @@
        });
     }
 
+    // we are settings just one button "additionalSpell"
+    function estaminateAdditional()
+    {
+        chrome.storage.local.get("additionalButton", function(result){
+
+            var value = Object.values(result)[0];
+
+            if(value == "off")
+                buttonList[11].enabled = "false";
+        });
+    }
+
     // helping list - we know button have to be show, addition to Url
       var buttonList = [
         {name: "Voices", urlChange: "spell=Voices%20from%20Below", enabled: "true"},
@@ -35,7 +47,8 @@
         {name: "Exo", urlChange: "spell=Exorcism", enabled: "true"},
         {name: "Fire", urlChange: "spell=Halloween%20Fire", enabled: "true"},
         {name: "Pumpkin", urlChange: "spell=Pumpkin%20Bombs", enabled: "true"},
-        {name: "ExoPumpkin", urlChange: "spell=Exorcism%2CPumpkin%20Bombs", enabled: "true"}
+        {name: "ExoPumpkin", urlChange: "spell=Exorcism%2CPumpkin%20Bombs", enabled: "true"},
+        {name: "additionalButton", enabled: "true" }
     ];
 
     chrome.runtime.onMessage.addListener( (message,sender,response) => {
@@ -50,7 +63,12 @@
     }
     else if(message.type === "newOneButton")
     {
-        mutattionObserver();
+        estaminateAdditional();
+
+        setTimeout(function() {
+            if( buttonList[11].enabled === 'true')
+                mutattionObserver();
+        }, 200);
     }
 });
 
@@ -101,7 +119,8 @@ function mutattionObserver()
 }
 const advancedSettingsLoaded = (tabUrl) => {
     
-        mutattionObserver();
+        if( buttonList[11].enabled === 'true')
+            mutattionObserver();
 
        // settings up new Url to be opened 
        function urlValue(urlChange) { 
@@ -134,7 +153,7 @@ const advancedSettingsLoaded = (tabUrl) => {
     // assign functions to array 
     var funcs = [];
 
-    for (let i = 0; i < buttonList.length; i++) {
+    for (let i = 0; i < buttonList.length - 1; i++) {
 
             if( buttonList[i].enabled == "true")
             {
@@ -151,7 +170,7 @@ const advancedSettingsLoaded = (tabUrl) => {
         document.getElementsByTagName("head")[0].appendChild(link);
 
     // creating buttons and injecting to site
-    for(let i=0; i< buttonList.length; i++ )
+    for(let i=0; i< buttonList.length - 1; i++ )
     {
         if( buttonList[i].enabled == "true")
         {

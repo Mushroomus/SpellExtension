@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     setOnOff(inputItems[i], inputItems[i].id);
                 });
             }
-        
     });
 
 });
