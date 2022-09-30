@@ -1,7 +1,7 @@
 (() => {
 
-    // additional function to search for key in object array, when it is found 
-    // we are chaning "enabled" value in buttonList 
+    // additional function to search for a "name" in buttonList, when it is found 
+    // we are changing "enabled" value in buttonList 
     function changeEnable( nameFind, enableSet ) {
         for (var i in buttonList) {
           if (buttonList[i].name == nameFind) {
@@ -23,7 +23,7 @@
        });
     }
 
-    // we are settings just one button "additionalSpell"
+    // additional function to set "enabled" - "additonalSpell" in buttonList 
     function estaminateAdditional()
     {
         chrome.storage.local.get("additionalButton", function(result){
@@ -35,7 +35,7 @@
         });
     }
 
-    // helping list - we know button have to be show, addition to Url
+    // helping list - we know which button have to be show + which url should have particular button
       var buttonList = [
         {name: "Voices", urlChange: "spell=Voices%20from%20Below", enabled: "true"},
         {name: "All", urlChange: "spell=Exorcism%2CHeadless%20Horseshoes%2CBruised%20Purple%20Footprints%2CChromatic%20Corruption%2CPutrescent%20Pigmentation%2CGangreen%20Footprints%2CCorpse%20Gray%20Footprints%2CVoices%20from%20Below%2CPumpkin%20Bombs%2CHalloween%20Fire%2CViolent%20Violet%20Footprints%2CRotten%20Orange%20Footprints%2CSpectral%20Spectrum%2CSinister%20Staining%2CDie%20Job%2CTeam%20Spirit%20Footprints", enabled: "true"},
@@ -54,6 +54,8 @@
     chrome.runtime.onMessage.addListener( (message,sender,response) => {
     if (message.type === "NEW")
     {
+        // that code is running when we are on /classfields
+
         estaminateButtons();
 
         // wait 200 miliseonds - estaminateButtons is async function so we have to wait when it ends 
@@ -63,6 +65,8 @@
     }
     else if(message.type === "newOneButton")
     {
+        //that code is running when we are on /stats or /profile
+
         estaminateAdditional();
 
         setTimeout(function() {
@@ -123,8 +127,7 @@ const advancedSettingsLoaded = (tabUrl) => {
     
         if( buttonList[11].enabled === 'true')
             mutattionObserver();
-
-            //console.log(tabUrl);
+            
        // settings up new Url to be opened 
        function urlValue(urlChange) { 
             if( tabUrl.includes("?") )
