@@ -87,12 +87,12 @@ function mutattionObserver()
                 {
                     var hrefValue = document.getElementById('popover-search-links').getElementsByClassName("btn btn-default btn-xs")[0].href;
                     hrefValue = hrefValue + '&' + buttonList[1].urlChange;
+
+                    var newA = document.createElement("a");
+                    newA.href = hrefValue;
     
                     var newButton = document.createElement("button");
-                    newButton.addEventListener("click", function(){
-                        window.open(hrefValue);
-                    });
-        
+
                     newButton.innerText = "Spells";
                     newButton.className = "spellButton";
                     newButton.title = "Click to get spell listings";
@@ -106,61 +106,55 @@ function mutattionObserver()
     
                     var newDiv = document.createElement("div");
                     newDiv.id = "newButtonListings";
-                    newDiv.appendChild(newButton);
+
+                    newA.appendChild(newButton);
+                    newDiv.appendChild(newA);
     
                     document.getElementsByClassName('popover-content')[0].appendChild(newDiv);
                 }
             }
-          };
-        
-    
+          };   
         const observer = new MutationObserver(callback);
         observer.observe(targetNode, config);
 }
+
+
 const advancedSettingsLoaded = (tabUrl) => {
     
         if( buttonList[11].enabled === 'true')
             mutattionObserver();
 
+            //console.log(tabUrl);
        // settings up new Url to be opened 
        function urlValue(urlChange) { 
-        return function() {
             if( tabUrl.includes("?") )
             {
                 if( tabUrl.includes("spell") )
                 {
                     if( tabUrl.indexOf("&", tabUrl.indexOf("spell") ) == -1 )
                     {
-                        tabUrl = tabUrl.replace( tabUrl.substr( tabUrl.indexOf("spell"), 
-                        tabUrl.length - tabUrl.indexOf("spell")  ), '');
-                        window.open(tabUrl + urlChange, "_self");
+                        var replaceText = tabUrl.substr( tabUrl.indexOf("spell") , 
+                        tabUrl.length - tabUrl.indexOf("spell")  );
+
+                        return tabUrl.replace(replaceText, '') + '' + urlChange;
                     }
                     else
                     {
-                        tabUrl =  tabUrl.replace( tabUrl.substr( tabUrl.indexOf("spell"), 
-                        tabUrl.indexOf("&", tabUrl.indexOf("spell") )  - tabUrl.indexOf("spell") + 1 ), '');
-                        window.open(tabUrl + "&" + urlChange, "_self");
+                        var replaceText = tabUrl.substr( tabUrl.indexOf("spell"), 
+                        tabUrl.indexOf("&", tabUrl.indexOf("spell") )  - tabUrl.indexOf("spell") + 1 );
+
+                        return tabUrl.replace(replaceText, '');
                     }
                 }
                 else
-                    window.open(tabUrl + "&" + urlChange, "_self");
+                {
+                    console.log("Doesn't contain spell ");
+                    return tabUrl + "&" + urlChange;
+                }
             }
             else
-                window.open(tabUrl + "?" + urlChange, "_self");
-        };
-      }
-
-    // assign functions to array 
-    var funcs = [];
-
-    for (let i = 0; i < buttonList.length - 1; i++) {
-
-            if( buttonList[i].enabled == "true")
-            {
-                var urlChange = buttonList[i]["urlChange"];
-                funcs[i] = urlValue(urlChange);
-            }
-        };
+               return tabUrl + "?" + urlChange;
+        }
 
         // adding css style to site - buttons
         var link = document.createElement("link");
@@ -169,13 +163,18 @@ const advancedSettingsLoaded = (tabUrl) => {
         link.rel = "stylesheet";
         document.getElementsByTagName("head")[0].appendChild(link);
 
-    // creating buttons and injecting to site
+    // creating <a> with href and <button> and injecting to site
     for(let i=0; i< buttonList.length - 1; i++ )
     {
         if( buttonList[i].enabled == "true")
         {
-            var name = buttonList[i]["name"];
             var urlChange = buttonList[i]["urlChange"];
+
+            var newA = document.createElement("a");
+            console.log(urlValue(urlChange));
+            newA.href = urlValue(urlChange);
+
+            var name = buttonList[i]["name"];
 
             var buttonName = "spellBtn" + name;
             var buttonName  = document.createElement("button");
@@ -185,10 +184,10 @@ const advancedSettingsLoaded = (tabUrl) => {
             buttonName.className = "spellButton";
             buttonName.title = "Click to find " + name + " Spells";
 
-            backpackSearchMenu.appendChild(buttonName);
-            buttonName.addEventListener("click", funcs[i]);
+
+            newA.appendChild(buttonName);
+            backpackSearchMenu.appendChild(newA);
         }
     }
 }
-
 })();
