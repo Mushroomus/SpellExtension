@@ -2,7 +2,7 @@
     "name": "Backpack.tf Spells",
     "version": "1.0",
     "description": "Shows spell buttons",
-    "permissions": ["tabs", "storage"],
+    "permissions": ["contextMenus","tabs", "storage"],
     "background": {
         "service_worker": "background.js"
       },

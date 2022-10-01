@@ -76,7 +76,6 @@
     }
 });
 
-
 function mutattionObserver()
 {
         // setting up MutationObserver, because popup shows dynamically - we need to monitor website when it pops up 
