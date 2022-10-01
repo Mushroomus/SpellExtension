@@ -17,6 +17,7 @@ chrome.tabs.onUpdated.addListener( (tabId, changeInfo,tab) => {
                     type: "newOneButton"
                 });
             }
+            /*
             else if(tab.url.includes("https://scrap.tf/auctions"))
             {
                 searchSpells = function(word){
@@ -49,6 +50,7 @@ chrome.tabs.onUpdated.addListener( (tabId, changeInfo,tab) => {
                     });      
                  chrome.contextMenus.onClicked.addListener(searchSpells);       
             }
+            */
         }
     }
 });
