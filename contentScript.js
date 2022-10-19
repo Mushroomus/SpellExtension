@@ -100,6 +100,7 @@ function mutattionObserver()
                     var hrefValue = document.getElementById('popover-search-links').getElementsByClassName("btn btn-default btn-xs")[0].href;
                     hrefValue = hrefValue + '&' + buttonList[1].urlChange;
 
+                    // get all spelled items without craftable etc.
                     if(hrefValue.includes("&craftable="))
                        hrefValue = removeAttribues(hrefValue, 'craftable=')
 
@@ -151,6 +152,7 @@ const advancedSettingsLoaded = (tabUrl) => {
        // settings up new Url to be opened 
        function urlValue(urlChange) { 
 
+            // back to first page 
             if( tabUrl.includes("?page=") )
             {
                 var changePage = tabUrl.substr( tabUrl.indexOf("?page=") , 
