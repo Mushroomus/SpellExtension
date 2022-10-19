@@ -76,6 +76,15 @@
     }
 });
 
+function removeAttribues( hrefValueChange, attribute)
+{
+    var changeHref =  hrefValueChange.substr(  hrefValueChange.indexOf(attribute) , 
+    hrefValueChange.indexOf("&",  hrefValueChange.indexOf(attribute) ) -  hrefValueChange.indexOf(attribute)  );
+    
+    hrefValueChange =  hrefValueChange.replace( '&' + changeHref, '');
+    return hrefValueChange;
+}
+
 function mutattionObserver()
 {
         // setting up MutationObserver, because popup shows dynamically - we need to monitor website when it pops up 
@@ -90,6 +99,18 @@ function mutattionObserver()
                 {
                     var hrefValue = document.getElementById('popover-search-links').getElementsByClassName("btn btn-default btn-xs")[0].href;
                     hrefValue = hrefValue + '&' + buttonList[1].urlChange;
+
+                    if(hrefValue.includes("&craftable="))
+                       hrefValue = removeAttribues(hrefValue, 'craftable=')
+
+                    if(hrefValue.includes("&killstreak="))
+                        hrefValue = removeAttribues(hrefValue, 'killstreak=')
+                    
+                    if(hrefValue.includes("&quality="))
+                        hrefValue = removeAttribues(hrefValue, 'quality=')
+                                
+                    if(hrefValue.includes("&killstreak\_tier"))
+                        hrefValue = removeAttribues(hrefValue, 'killstreak\_tier=')
 
                     var newA = document.createElement("a");
                     newA.href = hrefValue;
@@ -129,6 +150,16 @@ const advancedSettingsLoaded = (tabUrl) => {
             
        // settings up new Url to be opened 
        function urlValue(urlChange) { 
+
+            if( tabUrl.includes("?page=") )
+            {
+                var changePage = tabUrl.substr( tabUrl.indexOf("?page=") , 
+                tabUrl.indexOf("&", tabUrl.indexOf("?page=") ) - tabUrl.indexOf("?page=") );
+
+                tabUrl = tabUrl.replace(changePage, "?page=1");
+            }
+ 
+
             if( tabUrl.includes("?") )
             {
                 if( tabUrl.includes("spell") )
@@ -156,6 +187,8 @@ const advancedSettingsLoaded = (tabUrl) => {
             }
             else
                return tabUrl + "?" + urlChange;
+
+
         }
 
         // adding css style to site - buttons
@@ -173,7 +206,7 @@ const advancedSettingsLoaded = (tabUrl) => {
             var urlChange = buttonList[i]["urlChange"];
 
             var newA = document.createElement("a");
-            console.log(urlValue(urlChange));
+            
             newA.href = urlValue(urlChange);
 
             var name = buttonList[i]["name"];
