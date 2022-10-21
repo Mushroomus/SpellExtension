@@ -58,7 +58,7 @@
 
         estaminateButtons();
 
-        // wait 200 miliseonds - estaminateButtons is async function so we have to wait when it ends 
+        //wait 200 miliseonds - estaminateButtons is async function so we have to wait when it ends 
         setTimeout(function () {
             advancedSettingsLoaded(message.tabUrl);;
           }, 200);
@@ -182,10 +182,7 @@ const advancedSettingsLoaded = (tabUrl) => {
                     }
                 }
                 else
-                {
-                    console.log("Doesn't contain spell ");
                     return tabUrl + "&" + urlChange;
-                }
             }
             else
                return tabUrl + "?" + urlChange;
@@ -220,7 +217,6 @@ const advancedSettingsLoaded = (tabUrl) => {
             buttonName.innerHTML = name;
             buttonName.className = "spellButton";
             buttonName.title = "Click to find " + name + " Spells";
-
 
             newA.appendChild(buttonName);
             backpackSearchMenu.appendChild(newA);
