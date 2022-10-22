@@ -28,7 +28,7 @@ chrome.tabs.onUpdated.addListener( (tabId, changeInfo,tab) => {
                         query = query.replace('Vintage','');
                         query = query.replace(' ', '');
                     }
-
+        
                     if(query.includes('Strange'))
                     {
                         query = query.replace('Strange', '');
@@ -37,9 +37,9 @@ chrome.tabs.onUpdated.addListener( (tabId, changeInfo,tab) => {
                     
                     query = "https://backpack.tf/classifieds?item=" + query + 
                     "&spell=Exorcism%2CHeadless%20Horseshoes%2CBruised%20Purple%20Footprints%2CChromatic%20Corruption%2CPutrescent%20Pigmentation%2CGangreen%20Footprints%2CCorpse%20Gray%20Footprints%2CVoices%20from%20Below%2CPumpkin%20Bombs%2CHalloween%20Fire%2CViolent%20Violet%20Footprints%2CRotten%20Orange%20Footprints%2CSpectral%20Spectrum%2CSinister%20Staining%2CDie%20Job%2CTeam%20Spirit%20Footprints";
-
+        
                     chrome.tabs.create({url: query});  
-
+        
                 };
                     chrome.contextMenus.removeAll(function() {
                         chrome.contextMenus.create({
@@ -47,12 +47,15 @@ chrome.tabs.onUpdated.addListener( (tabId, changeInfo,tab) => {
                         title: "Find Spells!",
                         contexts:["selection"],  // ContextType
                         });
-                    });      
-                 chrome.contextMenus.onClicked.addListener(searchSpells);       
+                    }); 
+
+                    chrome.contextMenus.onClicked.addListener(searchSpells);       
             }
             */
         }
     }
 });
+
+
 
 
