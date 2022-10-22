@@ -58,7 +58,7 @@
 
         estaminateButtons();
 
-        // wait 200 miliseonds - estaminateButtons is async function so we have to wait when it ends 
+        //wait 200 miliseonds - estaminateButtons is async function so we have to wait when it ends 
         setTimeout(function () {
             advancedSettingsLoaded(message.tabUrl);;
           }, 200);
@@ -76,6 +76,15 @@
     }
 });
 
+function removeAttribues( hrefValueChange, attribute)
+{
+    var changeHref =  hrefValueChange.substr(  hrefValueChange.indexOf(attribute) , 
+    hrefValueChange.indexOf("&",  hrefValueChange.indexOf(attribute) ) -  hrefValueChange.indexOf(attribute)  );
+    
+    hrefValueChange =  hrefValueChange.replace( '&' + changeHref, '');
+    return hrefValueChange;
+}
+
 function mutattionObserver()
 {
         // setting up MutationObserver, because popup shows dynamically - we need to monitor website when it pops up 
@@ -90,6 +99,19 @@ function mutattionObserver()
                 {
                     var hrefValue = document.getElementById('popover-search-links').getElementsByClassName("btn btn-default btn-xs")[0].href;
                     hrefValue = hrefValue + '&' + buttonList[1].urlChange;
+
+                    // get all spelled items without craftable etc.
+                    if(hrefValue.includes("&craftable="))
+                       hrefValue = removeAttribues(hrefValue, 'craftable=')
+
+                    if(hrefValue.includes("&killstreak="))
+                        hrefValue = removeAttribues(hrefValue, 'killstreak=')
+                    
+                    if(hrefValue.includes("&quality="))
+                        hrefValue = removeAttribues(hrefValue, 'quality=')
+                                
+                    if(hrefValue.includes("&killstreak\_tier"))
+                        hrefValue = removeAttribues(hrefValue, 'killstreak\_tier=')
 
                     var newA = document.createElement("a");
                     newA.href = hrefValue;
@@ -129,6 +151,17 @@ const advancedSettingsLoaded = (tabUrl) => {
             
        // settings up new Url to be opened 
        function urlValue(urlChange) { 
+
+            // back to first page 
+            if( tabUrl.includes("?page=") )
+            {
+                var changePage = tabUrl.substr( tabUrl.indexOf("?page=") , 
+                tabUrl.indexOf("&", tabUrl.indexOf("?page=") ) - tabUrl.indexOf("?page=") );
+
+                tabUrl = tabUrl.replace(changePage, "?page=1");
+            }
+ 
+
             if( tabUrl.includes("?") )
             {
                 if( tabUrl.includes("spell") )
@@ -149,13 +182,12 @@ const advancedSettingsLoaded = (tabUrl) => {
                     }
                 }
                 else
-                {
-                    console.log("Doesn't contain spell ");
                     return tabUrl + "&" + urlChange;
-                }
             }
             else
                return tabUrl + "?" + urlChange;
+
+
         }
 
         // adding css style to site - buttons
@@ -173,7 +205,7 @@ const advancedSettingsLoaded = (tabUrl) => {
             var urlChange = buttonList[i]["urlChange"];
 
             var newA = document.createElement("a");
-            console.log(urlValue(urlChange));
+            
             newA.href = urlValue(urlChange);
 
             var name = buttonList[i]["name"];
@@ -185,7 +217,6 @@ const advancedSettingsLoaded = (tabUrl) => {
             buttonName.innerHTML = name;
             buttonName.className = "spellButton";
             buttonName.title = "Click to find " + name + " Spells";
-
 
             newA.appendChild(buttonName);
             backpackSearchMenu.appendChild(newA);
