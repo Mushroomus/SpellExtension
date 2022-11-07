@@ -6,6 +6,7 @@ function setOnOff(inputId, key)
         chrome.storage.local.set({[key]: 'on'});
     else
         chrome.storage.local.set({[key]: 'off'});
+        
 }
 
 
