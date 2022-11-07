@@ -65,7 +65,7 @@
             advancedSettingsLoaded(message.tabUrl);;
           }, 200);
         
-          contentScriptInjected = true;
+        contentScriptInjected = true;
     }
     else if(message.type === "newOneButton")
     {
