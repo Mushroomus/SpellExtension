@@ -34,8 +34,7 @@ chrome.contextMenus.onClicked.addListener(searchSpells);
 */
 
 chrome.tabs.onUpdated.addListener( (tabId, changeInfo,tab) => {
-
-    if(tab.url)
+    if(tab.url && tab.status === 'complete')
     {
         if(tab.url.includes("https://backpack.tf/classifieds"))
         {
@@ -48,9 +47,9 @@ chrome.tabs.onUpdated.addListener( (tabId, changeInfo,tab) => {
             tab.url.includes("https://backpack.tf/stats") || tab.url.includes("https://backpack.tf/u"))
         {
             chrome.tabs.sendMessage( tabId, {
-                type: "newOneButton"
+            type: "newOneButton"
             });
-        }  
+        } 
     }
 });
 

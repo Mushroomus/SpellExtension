@@ -51,8 +51,10 @@
         {name: "additionalButton", enabled: "true" }
     ];
 
+    var contentScriptInjected = false;
+
     chrome.runtime.onMessage.addListener( (message,sender,response) => {
-    if (message.type === "NEW")
+    if (message.type === "NEW" && contentScriptInjected == false)
     {
         // that code is running when we are on /classfields
 
@@ -62,6 +64,8 @@
         setTimeout(function () {
             advancedSettingsLoaded(message.tabUrl);;
           }, 200);
+        
+          contentScriptInjected = true;
     }
     else if(message.type === "newOneButton")
     {
